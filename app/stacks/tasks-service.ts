@@ -8,7 +8,7 @@ export class TasksStack extends cdk.Stack {
         super(scope, id, props);
 
         // Stack tags
-        cdk.Tags.of(this).add("App", "Tasks");
+        cdk.Tags.of(this).add("App", "TasksService");
 
         const TasksTable = new dynamodb.Table(this, "TasksTable", {
           partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
@@ -17,7 +17,7 @@ export class TasksStack extends cdk.Stack {
 
         const CreateTaskFn = new pylambda.PythonFunction(this, "CreateTaskFn", {
           entry: "src/py",
-          index: "create_task.py",
+          index: "Tasks/create_task.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -28,7 +28,7 @@ export class TasksStack extends cdk.Stack {
 
         const GetTaskFn = new pylambda.PythonFunction(this, "GetTaskFn", {
           entry: "src/py",
-          index: "get_task.py",
+          index: "Tasks/get_task.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -39,7 +39,7 @@ export class TasksStack extends cdk.Stack {
 
         const GetTasksFn = new pylambda.PythonFunction(this, "GetTasksFn", {
           entry: "src/py",
-          index: "get_tasks.py",
+          index: "Tasks/get_tasks.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -50,7 +50,7 @@ export class TasksStack extends cdk.Stack {
 
         const UpdateTaskFn = new pylambda.PythonFunction(this, "UpdateTaskFn", {
           entry: "src/py",
-          index: "update_task.py",
+          index: "Tasks/update_task.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -61,7 +61,7 @@ export class TasksStack extends cdk.Stack {
 
         const DeleteTaskFn = new pylambda.PythonFunction(this, "DeleteTaskFn", {
           entry: "src/py",
-          index: "delete_task.py",
+          index: "Tasks/delete_task.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -72,7 +72,7 @@ export class TasksStack extends cdk.Stack {
 
         const CompleteTaskFn = new pylambda.PythonFunction(this, "CompleteTaskFn", {
           entry: "src/py",
-          index: "complete_task.py",
+          index: "Tasks/complete_task.py",
           runtime: lambda.Runtime.PYTHON_3_11,
           timeout: cdk.Duration.seconds(30),
           environment: {
