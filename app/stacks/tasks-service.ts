@@ -1,84 +1,81 @@
 import * as pylambda from "@aws-cdk/aws-lambda-python-alpha";
 import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 
 export class TasksStack extends cdk.Stack {
+    public readonly createTaskFn: lambda.IFunction;
+    public readonly getTaskFn: lambda.IFunction;
+    public readonly getTasksFn: lambda.IFunction;
+    public readonly updateTaskFn: lambda.IFunction;
+    public readonly deleteTaskFn: lambda.IFunction;
+    public readonly completeTaskFn: lambda.IFunction;
+
     constructor(scope: Construct, id: string, props: ImageClassificationStackProps) {
         super(scope, id, props);
 
         // Stack tags
         cdk.Tags.of(this).add("App", "TasksService");
 
-        const TasksTable = new dynamodb.Table(this, "TasksTable", {
+        const tasksTable = new dynamodb.Table(this, "tasksTable", {
           partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
           billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
           cdk.RemovalPolicy.DESTROY,
         });
 
-        const CreateTaskFn = new pylambda.PythonFunction(this, "CreateTaskFn", {
+        this.createTaskFn = new pylambda.PythonFunction(this, "createTaskFn", {
           entry: "src/py",
           index: "Tasks/create_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
-            TABLE_NAME: TasksTable.tableName,
+            TABLE_NAME: tasksTable.tableName,
           },
         });
-        TasksTable.grantReadWriteData(CreateTaskFn);
+        tasksTable.grantReadWriteData(createTaskFn);
 
-        const GetTaskFn = new pylambda.PythonFunction(this, "GetTaskFn", {
+        this.getTaskFn = new pylambda.PythonFunction(this, "getTaskFn", {
           entry: "src/py",
           index: "Tasks/get_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
-            TABLE_NAME: TasksTable.tableName,
+            TABLE_NAME: tasksTable.tableName,
           },
         });
-        TasksTable.grantReadData(GetTaskFn);
+        tasksTable.grantReadData(getTaskFn);
 
-        const GetTasksFn = new pylambda.PythonFunction(this, "GetTasksFn", {
+        this.getTasksFn = new pylambda.PythonFunction(this, "getTasksFn", {
           entry: "src/py",
           index: "Tasks/get_tasks.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
-            TABLE_NAME: TasksTable.tableName,
+            TABLE_NAME: tasksTable.tableName,
           },
         });
-        TasksTable.grantReadData(GetTasksFn);
+        tasksTable.grantReadData(getTasksFn);
 
-        const UpdateTaskFn = new pylambda.PythonFunction(this, "UpdateTaskFn", {
-          entry: "src/py",
-          index: "Tasks/update_task.py",
-          runtime: lambda.Runtime.PYTHON_3_10,
-          timeout: cdk.Duration.seconds(30),
-          environment: {
-            TABLE_NAME: TasksTable.tableName,
-          },
-        });
-        TasksTable.grantReadWriteData(UpdateTaskFn);
-
-        const DeleteTaskFn = new pylambda.PythonFunction(this, "DeleteTaskFn", {
+        this.deleteTaskFn = new pylambda.PythonFunction(this, "deleteTaskFn", {
           entry: "src/py",
           index: "Tasks/delete_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
-            TABLE_NAME: TasksTable.tableName,
+            TABLE_NAME: tasksTable.tableName,
           },
         });
-        TasksTable.grantReadWriteData(DeleteTaskFn);
+        tasksTable.grantReadWriteData(deleteTaskFn);
 
-        const CompleteTaskFn = new pylambda.PythonFunction(this, "CompleteTaskFn", {
+        this.completeTaskFn = new pylambda.PythonFunction(this, "completeTaskFn", {
           entry: "src/py",
           index: "Tasks/complete_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
-            TABLE_NAME: TasksTable.tableName,
+            TABLE_NAME: tasksTable.tableName,
           },
         });
-        TasksTable.grantReadWriteData(CompleteTaskFn);
+        tasksTable.grantReadWriteData(completeTaskFn);
 }

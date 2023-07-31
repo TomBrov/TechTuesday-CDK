@@ -9,6 +9,15 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import { Construct } from "constructs";
 
+export interface ApiStackProps extends cdk.StackProps {
+    createTaskFn: lambda.IFunction;
+    getTaskFn: lambda.IFunction;
+    getTasksFn: lambda.IFunction;
+    updateTaskFn: lambda.IFunction;
+    deleteTaskFn: lambda.IFunction;
+    completeTaskFn: lambda.IFunction;
+}
+
 export class ApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
@@ -31,10 +40,6 @@ export class ApiStack extends cdk.Stack {
         BUCKET_NAME: openApiSpec.s3BucketName,
         KEY: openApiSpec.s3ObjectKey,
       },
-      tracing: Tracing.ACTIVE,
-      currentVersionOptions: {
-        provisionedConcurrentExecutions: 1,
-      },
     });
     openApiSpec.grantRead(docsFn);
 
@@ -55,8 +60,35 @@ export class ApiStack extends cdk.Stack {
         types: [apigateway.EndpointType.EDGE],
       },
     });
+
     const v1 = api.root.addResource("api").addResource("v1");
-    const tasks =
-    const docs = api.root.addResource("docs");
+    const tasks = v1.addResource("tasks");
+    const docs = v1.addResource("docs");
+    const health = v1.addResource("health");
+
+    // allowMethods
+    health.addMethod("GET", new apigateway.LambdaIntegration(healthFn));
+    docs.addMethod("GET", new apigateway.LambdaIntegration(docsFn));
+
+    // Tasks
+    tasks.addMethod("POST", new apigateway.LambdaIntegration(props.createTaskFn));
+    tasks.addMethod("GET", new apigateway.LambdaIntegration(props.getTasksFn));
+
+    const id = tasks.addResource("{id}");
+    id.addMethod("PUT", new apigateway.LambdaIntegration(props.completeTaskFn, {
+      requestParameters: {
+        "method.request.path.id": true,
+      },
+    }));
+    id.addMethod("GET", new apigateway.LambdaIntegration(props.getTaskFn, {
+      requestParameters: {
+        "method.request.path.id": true,
+      },
+    }));
+    id.addMethod("DELETE", new apigateway.LambdaIntegration(props.deleteTaskFn));
+
+    new cdk.CfnOutput(this, "ApiUrl", {
+          value: api.url,
+    });
   }
 }
