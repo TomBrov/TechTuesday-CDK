@@ -1,9 +1,11 @@
 import boto3
 import json
+import os
 from botocore.exceptions import ClientError
 
+table_name = os.environ['TABLE_NAME']
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('tasks-table')
+table = dynamodb.Table(table_name)
 
 # PATCH: Mark a task as complete
 def handler(event: Event, context):
