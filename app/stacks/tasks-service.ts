@@ -1,13 +1,14 @@
 import * as pylambda from "@aws-cdk/aws-lambda-python-alpha";
 import * as cdk from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import { Tracing } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 
 export class TasksStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: ImageClassificationStackProps) {
         super(scope, id, props);
+
+        // Stack tags
+        cdk.Tags.of(this).add("App", "Tasks");
 
         const TasksTable = new dynamodb.Table(this, "TasksTable", {
           partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
