@@ -25,8 +25,8 @@ export class TasksStack extends cdk.Stack {
         });
 
         this.createTaskFn = new pylambda.PythonFunction(this, "createTaskFn", {
-          entry: "src/py",
-          index: "Tasks/create_task.py",
+          entry: "src/Tasks/py",
+          index: "functions/create_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -36,8 +36,8 @@ export class TasksStack extends cdk.Stack {
         tasksTable.grantReadWriteData(createTaskFn);
 
         this.getTaskFn = new pylambda.PythonFunction(this, "getTaskFn", {
-          entry: "src/py",
-          index: "Tasks/get_task.py",
+          entry: "src/Tasks/py",
+          index: "functions/get_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -47,8 +47,8 @@ export class TasksStack extends cdk.Stack {
         tasksTable.grantReadData(getTaskFn);
 
         this.getTasksFn = new pylambda.PythonFunction(this, "getTasksFn", {
-          entry: "src/py",
-          index: "Tasks/get_tasks.py",
+          entry: "src/Tasks/py",
+          index: "functions/get_tasks.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -58,8 +58,8 @@ export class TasksStack extends cdk.Stack {
         tasksTable.grantReadData(getTasksFn);
 
         this.deleteTaskFn = new pylambda.PythonFunction(this, "deleteTaskFn", {
-          entry: "src/py",
-          index: "Tasks/delete_task.py",
+          entry: "src/Tasks/py",
+          index: "functions/delete_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {
@@ -69,8 +69,8 @@ export class TasksStack extends cdk.Stack {
         tasksTable.grantReadWriteData(deleteTaskFn);
 
         this.completeTaskFn = new pylambda.PythonFunction(this, "completeTaskFn", {
-          entry: "src/py",
-          index: "Tasks/complete_task.py",
+          entry: "src/Tasks/py",
+          index: "functions/complete_task.py",
           runtime: lambda.Runtime.PYTHON_3_10,
           timeout: cdk.Duration.seconds(30),
           environment: {

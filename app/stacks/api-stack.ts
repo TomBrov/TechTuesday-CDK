@@ -32,8 +32,8 @@ export class ApiStack extends cdk.Stack {
 
     // Docs lambda function
     const docsFn = new pylambda.PythonFunction(this, "DocsFn", {
-      entry: "src/py",
-      index: "api/serve_docs.py",
+      entry: "src/api/py",
+      index: "functions/serve_docs.py",
       runtime: lambda.Runtime.PYTHON_3_10,
       timeout: cdk.Duration.seconds(5),
       environment: {
@@ -44,8 +44,8 @@ export class ApiStack extends cdk.Stack {
     openApiSpec.grantRead(docsFn);
 
     const healthFn = new pylambda.PythonFunction(this, "HealthFn", {
-      entry: "src/py",
-      index: "api/health.py",
+      entry: "src/api/py",
+      index: "functions/health_check.py",
       runtime: lambda.Runtime.PYTHON_3_10,
       timeout: cdk.Duration.seconds(30),
     });
