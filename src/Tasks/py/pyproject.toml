@@ -1,6 +1,6 @@
 [tool.poetry]
-authors = ["Tom Brovender <Or.Shemtov@cellebrite.com>"]
-description = ""
+authors = ["Tom Brovender <tom.brovender@develeap.com>"]
+description = "Tasks Service"
 name = "Tasks"
 version = "0.1.0"
 

@@ -1,6 +1,6 @@
 [tool.poetry]
-authors = ["Tom Brovender <Or.Shemtov@cellebrite.com>"]
-description = ""
+authors = ["Tom Brovender <tom.brovender@develeap.com>"]
+description = "APIGateway functions"
 name = "api"
 version = "0.1.0"
 
