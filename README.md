@@ -1,3 +1,10 @@
+![AWS](https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![js](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+![maintanance](https://img.shields.io/badge/Maintained%3F-no-red.svg)
 # Task Management API
 
 This is a Serverless Application built using AWS CDK (Cloud Development Kit), AWS Lambda, API Gateway, and DynamoDB. The API provides a set of endpoints to manage tasks.
@@ -25,8 +32,9 @@ This is a Serverless Application built using AWS CDK (Cloud Development Kit), AW
 
 ### Prerequisites
 - AWS Account
-- AWS CLI installed and configured
+- AWS CLI (version 2) installed and configured
 - Node.js (version 16.0.0 or later)
+- TypeScript (version 5.1.6 or later)
 - AWS CDK (version 2.80.0 or later)
 - Python (version 3.10 or later)
 
