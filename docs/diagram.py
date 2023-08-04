@@ -15,7 +15,7 @@ with Diagram("Task Management API", show=False, filename="diagram"):
             create_task = Lambda("createTaskFn")
             get_task = Lambda("getTaskFn")
             get_tasks = Lambda("getTasksFn")
-            update_task = Lambda("updateTaskFn")
+            health = Lambda("Healthfn")
             delete_task = Lambda("deleteTaskFn")
             complete_task = Lambda("completeTaskFn")
             docs = Lambda("DocsFn")
@@ -23,14 +23,14 @@ with Diagram("Task Management API", show=False, filename="diagram"):
         with Cluster("DynamoDB"):
             tasks_db = Dynamodb("Tasks")
 
-        open_api = s3("OpenApiSpec")
+        open_api = s3("OpenApiAsset")
 
         user >> api_gateway
 
         api_gateway >> create_task >> tasks_db
         api_gateway >> get_task >> tasks_db
         api_gateway >> get_tasks >> tasks_db
-        api_gateway >> update_task >> tasks_db
+        api_gateway >> health
         api_gateway >> delete_task >> tasks_db
         api_gateway >> complete_task >> tasks_db
         api_gateway >> docs >> open_api
