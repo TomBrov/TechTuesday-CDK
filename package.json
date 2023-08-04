@@ -11,7 +11,8 @@
     "cdk": "cdk",
     "destroy": "cdk destroy --all --require-approval never",
     "synth": "cdk synth",
-    "deploy": "cdk deploy --all --require-approval never"
+    "deploy": "cdk deploy --all --require-approval never",
+    "bootstrap": "cdk bootstrap"
   },
   "devDependencies": {
     "@types/jest": "^29.5.3",
