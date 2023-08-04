@@ -26,9 +26,9 @@ This is a Serverless Application built using AWS CDK (Cloud Development Kit), AW
 ### Prerequisites
 - AWS Account
 - AWS CLI installed and configured
-- Node.js (version 14.0.0 or later)
-- AWS CDK (version 1.85.0 or later)
-- Python (version 3.6 or later)
+- Node.js (version 16.0.0 or later)
+- AWS CDK (version 2.80.0 or later)
+- Python (version 3.10 or later)
 
 ### Installation
 
