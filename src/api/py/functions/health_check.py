@@ -4,7 +4,15 @@ import os
 
 
 # health check
-def handler(event: Event, context):
+def handler(event, context):
     return {
-        "Message": "Hello from Lambda!"
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps({
+            "Message": "Hello from Lambda!"
+        }),
+        "isBase64Encoded": False
     }

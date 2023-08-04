@@ -8,9 +8,12 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
 # GET: Retrieve a task by ID
-def handler(event: Event, context):
+def handler(event, context):
+    path = event["path"]
+    task_id = path.split("/")[-1]
+
     try:
-        response = table.get_item(Key={'taskId': event['taskId']})
+        response = table.get_item(Key={'id': task_id})
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:

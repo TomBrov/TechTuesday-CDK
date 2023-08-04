@@ -12,7 +12,7 @@ export class TasksStack extends cdk.Stack {
     public readonly deleteTaskFn: lambda.IFunction;
     public readonly completeTaskFn: lambda.IFunction;
 
-    constructor(scope: Construct, id: string, props: ImageClassificationStackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         // Stack tags
@@ -21,7 +21,6 @@ export class TasksStack extends cdk.Stack {
         const tasksTable = new dynamodb.Table(this, "tasksTable", {
           partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
           billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-          cdk.RemovalPolicy.DESTROY,
         });
 
         this.createTaskFn = new pylambda.PythonFunction(this, "createTaskFn", {
@@ -33,7 +32,7 @@ export class TasksStack extends cdk.Stack {
             TABLE_NAME: tasksTable.tableName,
           },
         });
-        tasksTable.grantReadWriteData(createTaskFn);
+        tasksTable.grantReadWriteData(this.createTaskFn);
 
         this.getTaskFn = new pylambda.PythonFunction(this, "getTaskFn", {
           entry: "src/Tasks/py",
@@ -44,7 +43,7 @@ export class TasksStack extends cdk.Stack {
             TABLE_NAME: tasksTable.tableName,
           },
         });
-        tasksTable.grantReadData(getTaskFn);
+        tasksTable.grantReadData(this.getTaskFn);
 
         this.getTasksFn = new pylambda.PythonFunction(this, "getTasksFn", {
           entry: "src/Tasks/py",
@@ -55,7 +54,7 @@ export class TasksStack extends cdk.Stack {
             TABLE_NAME: tasksTable.tableName,
           },
         });
-        tasksTable.grantReadData(getTasksFn);
+        tasksTable.grantReadData(this.getTasksFn);
 
         this.deleteTaskFn = new pylambda.PythonFunction(this, "deleteTaskFn", {
           entry: "src/Tasks/py",
@@ -66,7 +65,7 @@ export class TasksStack extends cdk.Stack {
             TABLE_NAME: tasksTable.tableName,
           },
         });
-        tasksTable.grantReadWriteData(deleteTaskFn);
+        tasksTable.grantReadWriteData(this.deleteTaskFn);
 
         this.completeTaskFn = new pylambda.PythonFunction(this, "completeTaskFn", {
           entry: "src/Tasks/py",
@@ -77,5 +76,6 @@ export class TasksStack extends cdk.Stack {
             TABLE_NAME: tasksTable.tableName,
           },
         });
-        tasksTable.grantReadWriteData(completeTaskFn);
+        tasksTable.grantReadWriteData(this.completeTaskFn);
+    }
 }

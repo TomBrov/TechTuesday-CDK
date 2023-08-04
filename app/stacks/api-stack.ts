@@ -1,4 +1,3 @@
-import * as golambda from "@aws-cdk/aws-lambda-go-alpha";
 import * as pylambda from "@aws-cdk/aws-lambda-python-alpha";
 import * as cdk from "aws-cdk-lib";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
@@ -51,7 +50,7 @@ export class ApiStack extends cdk.Stack {
     });
 
     // API Gateway
-    const api = new apigateway.RestApi(this, "ApiGateway", {
+    const api = new apigateway.RestApi(this, "ServerlessAPIGateway", {
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
@@ -74,18 +73,10 @@ export class ApiStack extends cdk.Stack {
     tasks.addMethod("POST", new apigateway.LambdaIntegration(props.createTaskFn));
     tasks.addMethod("GET", new apigateway.LambdaIntegration(props.getTasksFn));
 
-    const id = tasks.addResource("{id}");
-    id.addMethod("PUT", new apigateway.LambdaIntegration(props.completeTaskFn, {
-      requestParameters: {
-        "method.request.path.id": true,
-      },
-    }));
-    id.addMethod("GET", new apigateway.LambdaIntegration(props.getTaskFn, {
-      requestParameters: {
-        "method.request.path.id": true,
-      },
-    }));
-    id.addMethod("DELETE", new apigateway.LambdaIntegration(props.deleteTaskFn));
+    const Id = tasks.addResource("{Id}");
+    Id.addMethod("PUT", new apigateway.LambdaIntegration(props.completeTaskFn));
+    Id.addMethod("GET", new apigateway.LambdaIntegration(props.getTaskFn));
+    Id.addMethod("DELETE", new apigateway.LambdaIntegration(props.deleteTaskFn));
 
     new cdk.CfnOutput(this, "ApiUrl", {
           value: api.url,

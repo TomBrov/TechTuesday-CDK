@@ -8,7 +8,7 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
 # GET: Retrieve all tasks
-def handler(event: Event, context):
+def handler(event, context):
     response = table.scan()
 
     return {

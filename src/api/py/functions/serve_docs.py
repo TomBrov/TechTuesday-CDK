@@ -82,7 +82,7 @@ def convert_openapi_yaml_to_html(yaml_data):
     return html
 
 
-def handler(event: events.APIGatewayProxyEventV1, ctx: context.Context) -> responses.APIGatewayProxyResponseV1:
+def handler(event, context) -> responses.APIGatewayProxyResponseV1:
     s3 = boto3.resource("s3")
     bucket_name = os.getenv("BUCKET_NAME")
     object_key = os.getenv("KEY")
