@@ -3,6 +3,30 @@ info:
   version: 1.0.0
   title: Tasks API
 paths:
+  /health:
+    get:
+      summary: Health Check endpoint
+      responses:
+        200:
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Hello from Lambda!"
+        503:
+          description: Service is NOT healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Server Error"
   /tasks:
     post:
       summary: Create a new task
