@@ -30,7 +30,7 @@ with Diagram("Task Management API", show=False, filename="diagram"):
         api_gateway >> create_task >> tasks_db
         api_gateway >> get_task >> tasks_db
         api_gateway >> get_tasks >> tasks_db
-        api_gateway >> health
         api_gateway >> delete_task >> tasks_db
         api_gateway >> complete_task >> tasks_db
         api_gateway >> docs >> open_api
+        api_gateway >> health
